@@ -21,18 +21,18 @@
 *Prova Rocío
 * Matei
 * EI
-* SQL Injection
-* Cross Site Scripting (XSS)
-* Command Injection
+* SQL Injection (txell i Rocío)
+* Cross Site Scripting (XSS) (zurita)
+* Command Injection (rocío)
 * Insecure Direct Object References (IDOR)
-* Cross Site Request Forgery (CSRF)
-* XML External Entity (XXE)
-* Insecure Deserialization
-* File Upload
-* File Inclusion
-* Broken Authentication
-* Race Condition
-* Server Side Template Injection (SSTI)
+* Cross Site Request Forgery (CSRF) (txell)
+* XML External Entity (XXE) (rocío)
+* Insecure Deserialization (matei)
+* File Upload (matei)
+* File Inclusion (matei)
+* Broken Authentication (txell)
+* Race Condition (zurita)
+* Server Side Template Injection (SSTI) (zurita)
 
 <!-- Installation -->
 ## Installation
