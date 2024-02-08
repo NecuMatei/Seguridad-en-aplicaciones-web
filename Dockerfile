@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-LABEL Description="Welcome to las vegas muder fucker." \
+LABEL Description="Welcome to Las Vegas Mother fucker." \
 	License="Mozilla Public License Version 2.0" \
 	Usage="docker run -d -p [HOST PORT NUMBER]:80 yavuzlar/vulnlab" \
 	Version="1.0"
