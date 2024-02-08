@@ -24,7 +24,7 @@
 * SQL Injection (txell i Rocío)
 * Cross Site Scripting (XSS) (zurita)
 * Command Injection (rocío)
-* Insecure Direct Object References (IDOR)
+* Insecure Direct Object References (IDOR) (4)
 * Cross Site Request Forgery (CSRF) (txell)
 * XML External Entity (XXE) (rocío)
 * Insecure Deserialization (matei)
