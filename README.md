@@ -18,6 +18,7 @@
 <!-- Vulnerabilities List -->
 ## Vulnerabilities
 *ceba
+*Zurita
 *Prova Rocío
 * Matei
 * EI
