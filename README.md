@@ -30,5 +30,31 @@
 * Race Condition: Zurita
 * Server Side Template Injection (SSTI): Zurita
 
+<!-- Assignacion -->
+## Asignaciones de tarea
+* Matei:
+   * Insecure Deserialization
+   * File Upload
+   * File Inclusion
+   * Server Side Template Injection (SSTI)
+
+* Txell:
+   * SQL Injection
+   * Cross Site Request Forgery (CSRF)
+   * Broken Authentication
+   * Server Side Template Injection (SSTI)
+
+* Zurrita:
+   * Cross Site Scripting (XSS)
+   * Insecure Direct Object References (IDOR)
+   * Race Condition: Zurita
+   * Server Side Template Injection (SSTI)
+   
+* Rocio:
+   * SQL Injection
+   * Command Injection
+   * XML External Entity (XXE)
+   * Server Side Template Injection (SSTI)
+
 <!-- Instalación -->
 ## Instalación
