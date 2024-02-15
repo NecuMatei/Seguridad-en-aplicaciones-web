@@ -111,47 +111,41 @@ function escapeHtml($input)
                 <tbody> 
                   <?php
 
-
-                                        
-                                            if(isset($_GET['search']) and $_GET['search'] != "" )
-                                            {
-                                                $query = $mysqli->query("SELECT * FROM users WHERE 
-                                                name LIKE '%" . $_GET['search'] . "%'");
-                                                while($list = $query->fetch_array())
-                                                {
-                                                    echo '
+                    if(isset($_GET['search']) and $_GET['search'] != "" )
+                    {
+                      $query = $mysqli->query("SELECT * FROM users WHERE 
+                      name LIKE '%" . $_GET['search'] . "%'");
+                      while($list = $query->fetch_array())
+                      {
+                        echo '
                                                     
-																<tr>
-																	<td>'.$list['id'].'</td>
-																	<td>'.$list['username'].'</td>
-																	<td>'.$list['email'].'</td>
-																	<td>'.$list['name'].'</td>
-                                  <td>'.$list['surname'].'</td>
-                                  
-																</tr>
-                                                    ';
-                                                }
-                                            }
-                                            else
-                                            {
-                                              $query = $mysqli->query("SELECT * FROM users ");
-                                                while($list = $query->fetch_array())
-                                                {
-                                                    echo '
-                                                    
-																<tr>
-																	<td>'.$list['id'].'</td>
-																	<td>'.$list['username'].'</td>
-																	<td>'.$list['email'].'</td>
-																	<td>'.$list['name'].'</td>
-                                  <td>'.$list['surname'].'</td>
-                                  
-																</tr>
-                                                    ';
-                                                }
+													<tr>
+														<td>'.$list['id'].'</td>
+														<td>'.$list['username'].'</td>
+														<td>'.$list['email'].'</td>
+														<td>'.$list['name'].'</td>
+                            <td>'.$list['surname'].'</td>       
+													</tr>
+                          ';
+                      }
+                    }else{
+                      $query = $mysqli->query("SELECT * FROM users ");
+                      while($list = $query->fetch_array())
+                      {
+                        echo '
+                           <tr>
+                              <td>'.$list['id'].'</td>
+                              <td>'.$list['username'].'</td>
+                              <td>'.$list['email'].'</td>
+                              <td>'.$list['name'].'</td>
+                              <td>'.$list['surname'].'</td>   
+													 </tr>
+                            ';
+                      }
                                                 
-                                            }
-                                        ?> </tbody>
+                      }
+                  ?> 
+                </tbody>
               </table>
             </div>
           </div>
