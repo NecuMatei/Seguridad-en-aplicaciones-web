@@ -1,6 +1,33 @@
-<?php 
+<?php
 require("../../../lang/lang.php");
+require('dependencies/dbConnect.php'); // Asegúrate de que este archivo maneje la conexión de forma segura
+
 $strings = tr();
+
+// Evita la inyección de SQL usando sentencias preparadas
+if (isset($_GET['search']) && $_GET['search'] !== "") {
+    $searchTerm = '%' . $_GET['search'] . '%';
+    $stmt = $mysqli->prepare("SELECT id, username, email, name, surname FROM users WHERE name LIKE ?");
+    $stmt->bind_param("s", $searchTerm);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+} else {
+    // Si no hay término de búsqueda, realiza una consulta sin filtrar
+    $query = $mysqli->query("SELECT id, username, email, name, surname FROM users");
+    if ($query) {
+        $result = $query->fetch_all(MYSQLI_ASSOC);
+    } else {
+        // Manejo de errores si la consulta falla
+        die("Error en la consulta: " . $mysqli->error);
+    }
+}
+
+// Escapa los datos de salida para prevenir ataques XSS
+function escapeHtml($input)
+{
+    return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+}
 ?>
 
 <!DOCTYPE html>
@@ -44,9 +71,9 @@ $strings = tr();
 
 ?> 
     <main>
-      <div class="" style="padding: 60px;">
+      <div class="container-fluid" style="padding: 60px;">
         <div class="container-fluid">
-          <h1 class="mt-4"><?php echo $strings['kayit'] ?></h1>
+          <h1 class="mt-4"><?= escapeHtml($strings['kayit']) ?></h1>
         
     <div class="form-group">
       <span></span>
@@ -54,13 +81,13 @@ $strings = tr();
     <div class="row">
       <div class="col-4">
         <form method="GET">
-          <input type="text"placeholder="Search" value="" name="search" >
-          <button class="btn btn-primary" type="submit"> <?php echo $strings['search'] ?> </button>
+          <input type="text" placeholder="Search" value="<?= isset($_GET['search']) ? escapeHtml($_GET['search']) : '' ?>" name="search">
+          <button class="btn btn-primary" type="submit"><?= escapeHtml($strings['search']) ?></button>
         </form>
       </div>
       <div class="col-8">
         <form method="GET">
-          <button class="btn btn-primary" type="submit" style="margin-left:-90px"><?php echo $strings['reset'] ?></button>         
+          <button class="btn btn-primary" type="submit" style="margin-left:-90px"><?= escapeHtml($strings['reset']) ?></button>         
           <!-- <input placeholder="Delete" style="display:none" value="1" name="delete"> -->
         </form>
       </div>
@@ -81,49 +108,44 @@ $strings = tr();
                     
                   </tr>
                 </thead>
-                <tbody> <?php
+                <tbody> 
+                  <?php
 
-
-                                        
-                                            if(isset($_GET['search']) and $_GET['search'] != "" )
-                                            {
-                                                $query = $mysqli->query("SELECT * FROM users WHERE 
-                                                name LIKE '%" . $_GET['search'] . "%'");
-                                                while($list = $query->fetch_array())
-                                                {
-                                                    echo '
+                    if(isset($_GET['search']) and $_GET['search'] != "" )
+                    {
+                      $query = $mysqli->query("SELECT * FROM users WHERE 
+                      name LIKE '%" . $_GET['search'] . "%'");
+                      while($list = $query->fetch_array())
+                      {
+                        echo '
                                                     
-																<tr>
-																	<td>'.$list['id'].'</td>
-																	<td>'.$list['username'].'</td>
-																	<td>'.$list['email'].'</td>
-																	<td>'.$list['name'].'</td>
-                                  <td>'.$list['surname'].'</td>
-                                  
-																</tr>
-                                                    ';
-                                                }
-                                            }
-                                            else
-                                            {
-                                              $query = $mysqli->query("SELECT * FROM users ");
-                                                while($list = $query->fetch_array())
-                                                {
-                                                    echo '
-                                                    
-																<tr>
-																	<td>'.$list['id'].'</td>
-																	<td>'.$list['username'].'</td>
-																	<td>'.$list['email'].'</td>
-																	<td>'.$list['name'].'</td>
-                                  <td>'.$list['surname'].'</td>
-                                  
-																</tr>
-                                                    ';
-                                                }
+													<tr>
+														<td>'.$list['id'].'</td>
+														<td>'.$list['username'].'</td>
+														<td>'.$list['email'].'</td>
+														<td>'.$list['name'].'</td>
+                            <td>'.$list['surname'].'</td>       
+													</tr>
+                          ';
+                      }
+                    }else{
+                      $query = $mysqli->query("SELECT * FROM users ");
+                      while($list = $query->fetch_array())
+                      {
+                        echo '
+                           <tr>
+                              <td>'.$list['id'].'</td>
+                              <td>'.$list['username'].'</td>
+                              <td>'.$list['email'].'</td>
+                              <td>'.$list['name'].'</td>
+                              <td>'.$list['surname'].'</td>   
+													 </tr>
+                            ';
+                      }
                                                 
-                                            }
-                                        ?> </tbody>
+                      }
+                  ?> 
+                </tbody>
               </table>
             </div>
           </div>
