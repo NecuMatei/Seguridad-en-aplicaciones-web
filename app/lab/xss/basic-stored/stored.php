@@ -42,7 +42,7 @@ $db = new PDO('sqlite:database.db');
                     while ($cikti = $q->fetch(PDO::FETCH_ASSOC)) {
 
                         echo '<div class="msg col-md-6 m-3 px-4 bg-primary text-wrap " style="border-radius: 20px; padding: 5px;width: fit-content;color: aliceblue;">';
-                        echo $cikti['content'];
+                        echo htmlspecialchars($cikti['content']); //transforma los caracteres
                         echo '</div>';
                     }
                 }
@@ -72,6 +72,7 @@ $db = new PDO('sqlite:database.db');
         exit;
     }
     if (isset($_POST['mes'])) {
+        $message = filter_var($_POST['mes'], FILTER_SANITIZE_STRING); // Sanitizar la entrada de usuario
         $q = $db->prepare("INSERT INTO mandalorian_content (username,content) VALUES (:username,:message)");
         $q->execute(array(
             "username" => $_SESSION['username'],

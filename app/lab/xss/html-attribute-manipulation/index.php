@@ -1,12 +1,12 @@
 <?php
 require("../../../lang/lang.php");
 $strings = tr();
-function encodeB($char){
-    $replace = array(urlencode("<"),urlencode(">"));
-    $char=str_replace("<",urlencode("<"), $char);
-    $encoded=str_replace(">",urlencode(">"), $char);
-    return $encoded;
+function encodeB($char){ //para que filtre lo qu ele pasen
+    $replace = array(urlencode("<"), urlencode(">"));
+    $char = htmlspecialchars($char);
+    return $char;
 }
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -38,7 +38,7 @@ function encodeB($char){
         </div>
     </div>
     <div class="container d-flex justify-content-center ">
-        <?php
+        <?php 
         if (isset($_GET['name'])) {
             $ticketname = $_GET['name'];
             $ticketname = encodeB($ticketname);

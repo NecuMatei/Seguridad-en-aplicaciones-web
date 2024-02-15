@@ -14,17 +14,25 @@ $path = $img_pth->fetch(PDO::FETCH_ASSOC);
 //Uploads and db update
 if(isset($_POST["submit"])) {
     $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    $target_file = $target_dir . uniqid() . '.' . $imageFileType;//generar un unico ID de imagen para evitar conflictos
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
     
     // Check if image file is a actual image or fake image
     $check = getimagesize($_FILES["image"]["tmp_name"]);
     if($check !== false) {
-        $uploadOk = 1;
+        // Obligar a que suba x formato de imagen
+        if($_FILES["image"]["type"] == "image/jpeg" || $_FILES["image"]["type"] == "image/png") {
+            $uploadOk = 1;
+        } else {
+            echo "Solo se permiten archivos JPG y PNG.";
+            $uploadOk = 0;
+        }
     } else {
+        echo "El archivo no es una imagen válida.";
         $uploadOk = 0;
     }
+    
     
     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
     && $imageFileType != "gif" ) {
@@ -90,7 +98,7 @@ if(isset($_POST["submit"])) {
                             <tr>
                                 <td><?php echo $strings['name']; ?>:</td>
                                 <td style="border-left: 1px black solid;">
-                                    <?php echo $result["name"]; ?>
+                                <?php echo htmlspecialchars($result["name"]); //evitar possible ataque css?>
                                 </td>
                             </tr>
                             <tr>

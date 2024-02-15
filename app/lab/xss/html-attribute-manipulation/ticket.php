@@ -18,17 +18,15 @@ $strings = tr();
 
 <body>
     <div class="container d-flex justify-content-center flex-column" style="text-align:center;">
-        <div class="name">
-            <?php
-            if (isset($_GET['name'])) {
-                $name = $_GET['name'];
-                $name = htmlspecialchars($name);
+    <div class="name">
+    <?php
+    if (isset($_GET['name'])) { //para que simplemente imprima por pantalla
+        $name = $_GET['name'];
+        echo '<h2>' . $name . 's</h2>';
+    }
+    ?>
+</div>
 
-                $t = "'";
-                echo '<h2> ' . $name . '' . $t . 's </h2>';
-            }
-            ?>
-        </div>
         <div class="img">
             <img src="poster2.jpg" alt="" style="max-height: 90vh;" class="shadow-lg  p-1 bg-body rounded">
         </div>
