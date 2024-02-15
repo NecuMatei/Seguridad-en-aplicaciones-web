@@ -6,8 +6,10 @@ $strings = tr();
 // Establecer la conexión a la base de datos con consultas preparadas
 try {
     $db = new PDO('mysql:host=localhost;dbname=sql_injection', 'sql_injection', '');
+    // Establecer el modo de error para lanzar excepciones en lugar de advertencias
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
+    // Manejar cualquier error de conexión con la base de datos
     die("Error al conectar con la base de datos: " . $e->getMessage());
 }
 
@@ -24,6 +26,7 @@ if (!isset($_GET['img']) || !is_numeric($_GET['img']) || $_GET['img'] < 1 || $_G
 // Manejar las solicitudes POST para navegar entre imágenes
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['next'])) {
+        // Navegar a la siguiente imagen
         $next = $_GET['img'] + 1;
         if ($next > $id_limit) { 
             $next = 1;
@@ -32,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     if (isset($_POST['prev'])) {
+        // Navegar a la imagen anterior
         $prev = $_GET['img'] - 1;
         if ($prev < 1) {
             $prev = $id_limit;
