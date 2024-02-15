@@ -13,7 +13,7 @@ if (!isset($_GET['img'])) {
 if (isset($_POST['next'])) {
     $next=$_GET['img'];
     $next += 1;
-    if ($next > $id_limit) {
+    if ($next > $id_limit) { 
         $next = 1;
     }
     header("Location: index.php?img=" . $next . "");
