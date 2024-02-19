@@ -1,3 +1,4 @@
+
 <?php
 require("../../../lang/lang.php");
 $strings = tr();
@@ -5,42 +6,35 @@ $strings = tr();
 $mysqli = new mysqli('localhost', 'sql_injection', '', 'sql_injection');
 
 if ($mysqli->connect_errno) {
-    printf("Connect failed: %s\n", $mysqli->connect_error);
-    exit();
+printf("Connect failed: %s\n", $mysqli->connect_error);
+exit();
 }
 
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username']) && isset($_POST['password'])) {
-    $usr = $_POST['username'];
-    $pwd = $_POST['password'];
+if(isset($_POST['username']) && isset($_POST['password']) ){
+	
+	$usr=$_POST['username'];
+	$pwd=$_POST['password'];
+// per corregir sql injection
+	$result = $db->execute_query('SELECT * FROM users WHERE name = ?', [$name]);
+	while ($row = $result->fetch_assoc()) {
+		// Do something with $row
+	}
 
-    // Verificar la longitud del nombre de usuario y la contraseña
-    if (strlen($usr) < 5 || strlen($pwd) < 8) {
-        echo "Invalid credentials"; // Mensaje genérico
-        exit;
-    }
-
-    // Utilizar consultas preparadas para evitar la inyección de SQL
-    $sql = "SELECT username, password FROM users WHERE username=? LIMIT 1";
-    $stmt = $mysqli->prepare($sql);
-    $stmt->bind_param("s", $usr);
-    $stmt->execute();
-    $stmt->bind_result($dbUsername, $dbPassword);
-    $stmt->fetch();
-    $stmt->close();
-
-    // Verificar la contraseña usando password_verify
-    if ($dbUsername && password_verify($pwd, $dbPassword)) {
-        $_SESSION['username'] = $usr;
-        session_regenerate_id();
-        header("Location: admin.php");
-        exit;
-    } else {
-        // Mensaje genérico en caso de credenciales inválidas
-        echo "Invalid credentials";
-    }
+if ($result = $mysqli->query($sql)) {
+while($obj = $result->fetch_object()){
+	$_SESSION['username'] = $usr;
+	header("Location: admin.php");
+	exit;
 }
+}
+
+elseif($mysqli->error){
+print($mysqli->error);
+}		
+	}	
+
 ?>
 
 <!DOCTYPE html>
