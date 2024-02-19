@@ -16,11 +16,14 @@ if(isset($_POST['username']) && isset($_POST['password']) ){
 	
 	$usr=$_POST['username'];
 	$pwd=$_POST['password'];
+
 // per corregir sql injection
-	$result = $db->execute_query('SELECT * FROM users WHERE name = ?', [$name]);
-	while ($row = $result->fetch_assoc()) {
-		// Do something with $row
-	}
+ $stmt = $db->prepare('SELECT * FROM employees WHERE name = ?');
+ $stmt->bind_param('s', $name); // 's' specifies the variable type => 'string'
+ $stmt->execute();
+ $result = $stmt->get_result();
+ while ($row = $result->fetch_assoc()) {
+     // Do something with $row
 
 if ($result = $mysqli->query($sql)) {
 while($obj = $result->fetch_object()){
