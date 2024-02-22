@@ -1,59 +1,59 @@
 <?php
-// Incluir el archivo de idioma
 require("../../../lang/lang.php");
 $strings = tr();
+$db = new PDO('mysql:host=localhost; dbname=sql_injection', 'sql_injection', '');
 
-// Establecer la conexión a la base de datos con consultas preparadas
-try {
-    $db = new PDO('mysql:host=localhost;dbname=sql_injection', 'sql_injection', '');
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Error al conectar con la base de datos: " . $e->getMessage());
+// per corregir sql injection
+$stmt = $db->prepare('SELECT COUNT(*) FROM images');
+$stmt->bind_param('s', $name); // 's' especifica que la variable tiene que ser String
+$stmt->execute();
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
 }
 
-// Obtener el límite de imágenes
-$stmt = $db->query("SELECT COUNT(*) FROM images");
-$id_limit = $stmt->fetchColumn();
-
-// Redirigir si el parámetro 'img' no está establecido o es inválido
-if (!isset($_GET['img']) || !is_numeric($_GET['img']) || $_GET['img'] < 1 || $_GET['img'] > $id_limit) {
+if (!isset($_GET['img'])) {
     header("Location: index.php?img=1");
     exit;
 }
 
-// Manejar las solicitudes POST para navegar entre imágenes
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['next'])) {
-        $next = $_GET['img'] + 1;
-        if ($next > $id_limit) { 
-            $next = 1;
-        }
-        header("Location: index.php?img=" . $next);
-        exit;
+if (isset($_POST['next'])) {
+    $next=$_GET['img'];
+    $next += 1;
+    if ($next > $id_limit) { 
+        $next = 1;
     }
-    if (isset($_POST['prev'])) {
-        $prev = $_GET['img'] - 1;
-        if ($prev < 1) {
-            $prev = $id_limit;
-        }
-        header("Location: index.php?img=" . $prev);
-        exit;
+    header("Location: index.php?img=" . $next . "");
+    exit;
+}
+if (isset($_POST['prev'])) {
+    $_GET['img'] -= 1;
+    if ($_GET['img'] < 1) {
+        $_GET['img'] = $id_limit;
     }
+    header("Location: index.php?img=" . $_GET['img'] . "");
+    exit;
 }
 
-// Obtener la imagen actual de la base de datos utilizando una consulta preparada
-$stmt = $db->prepare("SELECT * FROM images WHERE id = ?");
-$stmt->execute([$_GET['img']]);
-$data = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_GET['img'])) {
+    $img = $_GET['img'];
+
+    $user = $db->query("SELECT * FROM images WHERE id = $img");
+}
+
 ?>
 
 <!doctype html>
 <html lang="en">
 
 <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo htmlspecialchars($strings['title']); ?></title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+
+    <title><?php echo $strings['title']; ?></title>
 </head>
 
 <body>
@@ -61,21 +61,31 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
         <div class="main">
             <div class="upper justify-content-center" style="text-align: center;margin: 2vh 0vh 6vh 0vh;">
                 <h1>
-                    <?php echo htmlspecialchars($strings['header']); ?>
+                    <?php echo $strings['header']; ?>
                 </h1>
                 <form action="" method="POST" class="row justify-content-center" style="margin: 2vh 0vh 6vh 0vh;">
                     <div class="col-md-10 button-con row justify-content-evenly ">
                         <div class="bottom justify-content-center" style="text-align: center;">
                             <?php
-                            // Mostrar la imagen si está definida y no hay errores
-                            if (!empty($data)) {
-                                echo '<img class="shadow bg-body rounded img-fluid" style="width:765px; height: 400px; object-fit: cover; padding : 0; margin-bottom: 0;" src="' . htmlspecialchars($data['path']) . '" alt="Image">';
+                            if (isset($_GET['img'])) {
+
+                                $error = $db->errorInfo();
+                                if (!empty($error[2])) {
+                                    echo $error[2];
+                                } else {
+                                    $data = $user->fetch();
+                                }
+
+                                if(isset($data)){
+                                    echo '<img class="shadow bg-body rounded img-fluid" style="width:765px; height: 400px; object-fit: cover; padding : 0; margin-bottom: 0;" src="' . $data['path'] . '"/>';
+                                }
+                                
                             }
                             ?>
                         </div>
                         <div class="btn-group w-75 mt-3">
-                            <button class="btn btn-primary" type="submit" name="prev"><?php echo htmlspecialchars($strings['back']); ?></button>
-                            <button class="btn btn-warning" type="submit" name="next"><?php echo htmlspecialchars($strings['next']); ?></button>
+                            <button class="btn btn-primary" type="submit" name="prev"><?php echo $strings['back']; ?></button>
+                            <button class="btn btn-warning" type="submit" name="next"><?php echo $strings['next']; ?></button>
                         </div>
                     </div>
                 </form>
@@ -83,6 +93,7 @@ $data = $stmt->fetch(PDO::FETCH_ASSOC);
             </div>
         </div>
     </div>
+    <script id="VLBar" title="<?= $strings['title'] ?>" category-id="2" src="/public/assets/js/vlnav.min.js"></script>
 </body>
 
 </html>
