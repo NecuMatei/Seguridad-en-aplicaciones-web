@@ -83,3 +83,9 @@ try {
 </body>
 
 </html>
+
+<?php  
+// vulnerable a {{ phpinfo() }} (TWIG)
+
+
+?>
