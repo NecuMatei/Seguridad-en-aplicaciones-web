@@ -44,11 +44,11 @@
    * Broken Authentication
    * Server Side Template Injection (SSTI)
 
-* Zurrita:
-   * Cross Site Scripting (XSS)
+* Zurita:
+   * Cross Site Scripting (XSS)  FINISH
    * Insecure Direct Object References (IDOR)
    * Race Condition: Zurita
-   * Server Side Template Injection (SSTI)
+   * Server Side Template Injection (SSTI) 1/2
    
 * Rocio:
    * SQL Injection
