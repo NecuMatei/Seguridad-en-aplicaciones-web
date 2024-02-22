@@ -19,18 +19,20 @@ if(isset($_POST['username']) && isset($_POST['password']) ){
 
 // per corregir sql injection
  $stmt = $db->prepare('SELECT * FROM employees WHERE name = ?');
- $stmt->bind_param('s', $name); // 's' specifies the variable type => 'string'
+ $stmt->bind_param('s', $name); // 's' especifica que la variable tiene que ser String
  $stmt->execute();
  $result = $stmt->get_result();
  while ($row = $result->fetch_assoc()) {
-     // Do something with $row
-
+ }
+ 
 if ($result = $mysqli->query($sql)) {
-while($obj = $result->fetch_object()){
-	$_SESSION['username'] = $usr;
-	header("Location: admin.php");
-	exit;
-}
+	while($obj = $result->fetch_object()){
+		$_SESSION['username'] = $usr;
+		header("Location: admin.php");
+		exit;
+	}
+}else{
+	$error_message = "Credenciales incorrectas. Por favor, inténtalo de nuevo.";
 }
 
 elseif($mysqli->error){
