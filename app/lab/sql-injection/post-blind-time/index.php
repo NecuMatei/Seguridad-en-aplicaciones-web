@@ -1,21 +1,34 @@
 <?php
 
-    require("../../../lang/lang.php");
-    $strings = tr();
+require("../../../lang/lang.php");
+$strings = tr();
 
-    try {
-        $db = new PDO('mysql:host=localhost; dbname=sql_injection', 'sql_injection', '');
-    } catch (Exception $e) {
-        echo $e;
+try {
+    $db = new PDO('mysql:host=localhost; dbname=sql_injection', 'sql_injection', '');
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Mostrar errores
+} catch (Exception $e) {
+    echo "Error al conectar a la base de datos: " . $e->getMessage();
+}
+
+if (isset($_POST['email'])) {
+    $email = $_POST['email'];
+
+    // Para evitar SQL injection
+    $stmt = $db->prepare("SELECT * FROM users WHERE email = :email");
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+
+    // Obtener resultados
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        // Usuario encontrado, puedes hacer algo con $user
+        $status = "success";
+    } else {
+        // Usuario no encontrado
+        $status = "error";
     }
-
-    if ( isset($_POST['email']) ){
-
-        $email = $_POST['email'];
-        $user = $db -> query("SELECT * FROM users WHERE email = '{$email}'");  
-
-        $status="success";
-    }
+}
 
 ?>
 
