@@ -21,7 +21,6 @@ if(isset($_POST['username']) && isset($_POST['password']) ){
 	$stmt->execute();
 	$result = $stmt->get_result();
 	while ($row = $result->fetch_assoc()) {
-		// Do something with $row
 	}
 
 if ($result = $mysqli->query($sql)) {
