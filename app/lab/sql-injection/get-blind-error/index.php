@@ -31,7 +31,17 @@ if (isset($_POST['prev'])) {
 if (isset($_GET['img'])) {
     $img = $_GET['img'];
 
-    $user = $db->query("SELECT * FROM images WHERE id = $img");
+    // Preparar la consulta con un marcador de posición
+    $stmt = $db->prepare("SELECT * FROM images WHERE id = :img_id");
+    
+    // Enlazar el valor de la variable $img al marcador de posición
+    $stmt->bindParam(':img_id', $img, PDO::PARAM_INT);
+
+    // Ejecutar la consulta preparada
+    $stmt->execute();
+
+    // Obtener los datos de la consulta preparada
+    $data = $stmt->fetch();
 }
 
 ?>
