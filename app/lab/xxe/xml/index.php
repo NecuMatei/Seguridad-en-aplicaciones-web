@@ -1,4 +1,6 @@
 <?php
+    //Amb aquesta linea no poden fer XML Injection
+    libxml_disable_entity_loader(true); 
     require("../../../lang/lang.php");
     $strings = tr();
 ?>
