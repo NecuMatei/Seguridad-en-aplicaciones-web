@@ -8,17 +8,28 @@
         $fileName = $_FILES['input_image']['name'];
 
         if(!empty($fileName)){
-            if(!file_exists("uploads")){
-                mkdir("uploads");
-            }
-    
-            $uploadPath = "uploads/".$fileName;
-    
-            if( @move_uploaded_file($tmpName,$uploadPath) ){
-                $status = "success";
-                
-            }else{
-                $status = "unsuccess";
+            // Obtiene el tipo MIME del archivo
+            $fileMimeType = mime_content_type($tmpName);
+
+            // Array con los MIME permitidos
+            $allowedMimeTypes = array('image/gif', 'image/jpeg', 'image/png', 'image/jpg');
+
+            // Verificar si el tipo MIME está permitido
+            if (in_array($fileMimeType, $allowedMimeTypes)) {
+                if(!file_exists("uploads")){
+                    mkdir("uploads");
+                }
+        
+                $uploadPath = "uploads/".$fileName;
+        
+                if( @move_uploaded_file($tmpName,$uploadPath) ){
+                    $status = "success";
+                    
+                }else{
+                    $status = "unsuccess";
+                }
+            } else {
+                $status = "unallowed_file_type";
             }
         }else{
             $status = "empty";
@@ -28,8 +39,6 @@
     }
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="<?= $strings['lang']; ?>">
 <head>
