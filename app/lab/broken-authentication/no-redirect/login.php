@@ -48,6 +48,9 @@ $strings = tr();
         </div>
         <button type="submit" class="btn btn-primary"><?php echo $strings['submit']; ?></button>
         <p><?php echo $strings['text']; ?></p>
+        <?php if (isset($_POST['submit'])) : ?>
+          <p>Thank you for subscribing!</p>
+        <?php endif; ?>
       </form>
 
 
