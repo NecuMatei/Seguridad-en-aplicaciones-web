@@ -1,10 +1,10 @@
 FROM ubuntu:20.04
-LABEL Description="Welcome to Las Vegas Mother fucker." \
+LABEL Description="Projecte UF3 by Team Powerranger." \
 	License="Mozilla Public License Version 2.0" \
 	Usage="docker run -d -p [HOST PORT NUMBER]:80 yavuzlar/vulnlab" \
 	Version="1.0"
 
-ENV TZ=Asia/Dubai
+ENV TZ=Europe/Spain
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt update
