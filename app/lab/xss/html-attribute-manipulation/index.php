@@ -1,14 +1,9 @@
 <?php
+// Incluye el archivo de traducción desde una ubicación relativa.
 require("../../../lang/lang.php");
 $strings = tr();
-function encodeB($char){ //para que filtre lo qu ele pasen
-    $replace = array(urlencode("<"), urlencode(">"));
-    $char = htmlspecialchars($char);
-    return $char;
-}
-
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,37 +14,30 @@ function encodeB($char){ //para que filtre lo qu ele pasen
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 
-    <title><?php echo $strings['title']; ?></title>
+    <!-- Título de la página obtenido de las traducciones -->
+    <title><?php echo htmlspecialchars($strings['title']); ?></title>
 </head>
 
 <body>
-    <div class="container d-flex justify-content-center p-4">
-        <div class="wrapper d-flex flex-column justify-content-center align-items-center shadow rounded p-5 mb-5" style="margin-top: 15vh;max-width: 50vw;">
-            <div class="headerx row">
-                <h4><?php echo $strings['text']; ?></h4>
-            </div>
-            <div class="bodyx row p-4">
-                <form action="#" method="get" class="">
-                    <label for="name" class="form-label"><?php echo $strings['name']; ?></label>
-                    <input type="text" name="name" class="form-control">
-                    <button type="submit" class="btn btn-success " style="margin-top: 10px;"><?php echo $strings['button']; ?></button>
-                </form>
-            </div>
+    <div class="container d-flex justify-content-center flex-column" style="text-align:center;">
+        <div class="name">
+            <?php
+            if (isset($_GET['name'])) {
+                // Escapa el contenido del parámetro 'name' usando htmlspecialchars
+                $name = htmlspecialchars($_GET['name']);
+
+                // Muestra el nombre escapado en la etiqueta <h2>
+                echo '<h2>' . $name . 's</h2>';
+            }
+            ?>
+        </div>
+        <div class="img">
+            <img src="poster2.jpg" alt="" style="max-height: 90vh;" class="shadow-lg  p-1 bg-body rounded">
         </div>
     </div>
-    <div class="container d-flex justify-content-center ">
-        <?php 
-        if (isset($_GET['name'])) {
-            $ticketname = $_GET['name'];
-            $ticketname = encodeB($ticketname);
-            echo '<div class="ticket alert alert-primary" style="max-width: 50vw;"><h6><a href="ticket.php?name=' . $ticketname . '"> ' . $strings['gate'] . ' </a></h6></div>';
-        }
-
-
-        ?>
-
-    </div>
-    <script id="VLBar" title="<?= $strings['title'] ?>" category-id="1" src="/public/assets/js/vlnav.min.js"></script>
+    <!-- Enlace de retroceso -->
+    <a href="index.php" style="margin: 0px 0px 15px 15px;"><button type="button" class="btn btn-success " style="margin-top: 10px;"><?php echo htmlspecialchars($strings['back']); ?></button></a>
+    <script id="VLBar" title="<?= htmlspecialchars($strings['title']) ?>" category-id="1" src="/public/assets/js/vlnav.min.js"></script>
 </body>
 
 </html>
